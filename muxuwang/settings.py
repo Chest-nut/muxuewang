@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     'users',
     'courses',
-
+    'organizations',
 ]
 
 AUTH_USER_MODEL = "users.UserInfo"

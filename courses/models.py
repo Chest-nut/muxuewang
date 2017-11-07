@@ -16,7 +16,7 @@ class Course(models.Model):
     student_num = models.IntegerField(verbose_name='学习人数')
     bookmark_num = models.IntegerField(verbose_name='收藏人数')
     image = models.ImageField(max_length=100,
-                              upload_to='courses/image./%/Y%m',
+                              upload_to='courses/image/%Y/%m',
                               verbose_name='封面图')
     click_num = models.IntegerField(default=0)
     add_time = models.DateTimeField(default=datetime.now)
