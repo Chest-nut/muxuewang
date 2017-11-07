@@ -15,7 +15,7 @@ class UserInfo(AbstractUser):
     address = models.CharField(max_length=100, null=True, blank=True)
     mobile = models.CharField(max_length=11, null=True)
     avatar = models.ImageField(max_length=100,
-                               upload_to='image/%Y/%m',
+                               upload_to='avatar/%Y/%m',
                                default='avatar/default.png')
     class Meta:
         verbose_name = '用户信息'
