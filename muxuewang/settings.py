@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'muxuwang.urls'
+ROOT_URLCONF = 'muxuewang.urls'
 
 TEMPLATES = [
     {
@@ -81,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'muxuwang.wsgi.application'
+WSGI_APPLICATION = 'muxuewang.wsgi.application'
 
 
 # Database
