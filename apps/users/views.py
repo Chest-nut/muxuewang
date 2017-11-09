@@ -34,3 +34,11 @@ class Login(View):
                 return render(request, 'login.html', {'msg': '用户名或密码错误！'})
         else:
             return render(request, 'login.html', {'login_form': login_form})
+
+
+class Register(View):
+    def get(self, request):
+        return render(request, 'register.html', {})
+
+    def post(self, request):
+        pass
