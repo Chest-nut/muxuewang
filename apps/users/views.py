@@ -6,7 +6,7 @@ from django.db.utils import IntegrityError
 from django.shortcuts import render
 from django.views.generic.base import View
 
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ForgetPasswordForm, ModifyPasswordForm
 from .models import UserInfo, EmailVerificationCode
 from utils.sendemail import send_verification_email
 
@@ -76,3 +76,41 @@ class Register(View):
             return render(request, 'login.html', {})
         else:
             return render(request, 'register.html', {'register_form': register_form})
+
+
+class ForgetPassword(View):
+    def get(self, request):
+        forgetpw_form = ForgetPasswordForm()
+        return render(request, 'forgetpwd.html', {'forgetpw_form': forgetpw_form})
+
+    def post(self, request):
+        forgetpw_form = ForgetPasswordForm(request.POST)
+        if forgetpw_form.is_valid():
+            email = request.POST.get('email', '')
+            send_verification_email(email, 'forget')
+            return render(request, 'sendemail_success.html', {})
+        else:
+            return render(request, 'register.html', {'register_form': forgetpw_form})
+
+
+class ResetPassword(View):
+    def get(self, request, reset_code):
+        emailvc = EmailVerificationCode.objects.get(code=reset_code)
+        if emailvc:
+            email = emailvc.email
+            return render(request, 'password_reset.html', {'email': email})
+
+class ModifyPassword(View):
+    def post(self, request):
+        modifypwd_form = ModifyPasswordForm(request.POST)
+        if modifypwd_form.is_valid():
+            email = request.POST.get('email', '')
+            password = request.POST.get('password', '')
+            password2 = request.POST.get('password2', '')
+            if password == password2:
+                user = UserInfo.objects.get(username=email)
+                user.password = make_password(password)
+                user.save()
+            return render(request, 'login.html', {})
+        else:
+            return render(request, 'password_reset.html', {})

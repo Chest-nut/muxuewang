@@ -31,3 +31,11 @@ def send_verification_email(email, send_type='register'):
         send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
         if send_status:
             print('发送成功')
+
+    elif send_type == 'forget':
+        email_title = '慕学网用户找回密码'
+        email_body = '请点击以下链接重置密码：http://127.0.0.1:8000/reset/%s/'%code
+
+        send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
+        if send_status:
+            print('发送成功')
