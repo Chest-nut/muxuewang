@@ -18,6 +18,6 @@ class ForgetPasswordForm(forms.Form):
     captcha = CaptchaField(error_messages={'invalid': '验证码错误'})
 
 
-class ModifyPasswordForm(forms.Form):
+class ResetPasswordForm(forms.Form):
     password = forms.CharField(required=True, min_length=8)
     password2 = forms.CharField(required=True, min_length=8)

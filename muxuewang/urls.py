@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 import xadmin
 
-from users.views import Login, Register, ActiveUser, ForgetPassword, ResetPassword, ModifyPassword
+from users.views import Login, Register, ActiveUser, ForgetPassword, ResetPassword
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -31,5 +31,4 @@ urlpatterns = [
     url(r'^active/(?P<active_code>.*)/$', ActiveUser.as_view(), name='active_user'),
     url(r'^forget/$', ForgetPassword.as_view(), name='forget_password'),
     url(r'^reset/(?P<reset_code>.*)/$', ResetPassword.as_view(), name='reset_password'),
-    url(r'^modify/$', ModifyPassword.as_view(), name='modify_password'),
 ]

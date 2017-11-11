@@ -6,7 +6,7 @@ from django.db.utils import IntegrityError
 from django.shortcuts import render
 from django.views.generic.base import View
 
-from .forms import LoginForm, RegisterForm, ForgetPasswordForm, ModifyPasswordForm
+from .forms import LoginForm, RegisterForm, ForgetPasswordForm, ResetPasswordForm
 from .models import UserInfo, EmailVerificationCode
 from utils.sendemail import send_verification_email
 
@@ -98,12 +98,12 @@ class ResetPassword(View):
         emailvc = EmailVerificationCode.objects.get(code=reset_code)
         if emailvc:
             email = emailvc.email
-            return render(request, 'password_reset.html', {'email': email})
+            return render(request, 'password_reset.html', {'email': email,
+                                                           'reset_code': reset_code})
 
-class ModifyPassword(View):
-    def post(self, request):
-        modifypwd_form = ModifyPasswordForm(request.POST)
-        if modifypwd_form.is_valid():
+    def post(self, request, reset_code):
+        resetpwd_form = ResetPasswordForm(request.POST)
+        if resetpwd_form.is_valid():
             email = request.POST.get('email', '')
             password = request.POST.get('password', '')
             password2 = request.POST.get('password2', '')
