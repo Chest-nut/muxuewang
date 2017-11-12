@@ -47,11 +47,10 @@ INSTALLED_APPS = [
     'courses',
     'organizations',
     'operation',
-
     'xadmin',
     'crispy_forms',
-
     'captcha',
+    'pure_pagination',
 ]
 
 AUTH_USER_MODEL = "users.UserInfo"
@@ -81,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.media',
             ],
         },
     },
@@ -150,3 +150,13 @@ EMAIL_HOST_USER = 'lin__chong@sina.com'
 EMAIL_HOST_PASSWORD = 'FL2x3qc'
 EMAIL_HOST_TLS = False
 EMAIL_FROM = 'lin__chong@sina.com'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 6,
+    'MARGIN_PAGES_DISPLAYED': 1,
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}

@@ -18,6 +18,7 @@ class CourseOrg(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=300, verbose_name='机构描述')
     bookmark_num = models.IntegerField(verbose_name='收藏人数')
+    student_num = models.IntegerField(verbose_name='学习人数', default=0)
     image = models.ImageField(max_length=100,
                               upload_to='org/image/%Y/%m',
                               verbose_name='封面图')

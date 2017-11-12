@@ -28,12 +28,12 @@ class ActiveUser(View):
             user.is_active = True
             user.save()
 
-        return render(request, 'login.html', {})
+        return render(request, 'users/login.html', {})
 
 
 class Login(View):
     def get(self, request):
-        return render(request, 'login.html', {})
+        return render(request, 'users/login.html', {})
 
     def post(self, request):
         login_form = LoginForm(request.POST)
@@ -44,19 +44,19 @@ class Login(View):
             if user:
                 if user.is_active is True:
                     login(request, user)
-                    return render(request, 'index.html', {})
+                    return render(request, 'users/index.html', {})
                 else:
-                    return render(request, 'login.html', {'msg': '用户未激活，请登录邮箱激活！'})
+                    return render(request, 'users/login.html', {'msg': '用户未激活，请登录邮箱激活！'})
             else:
-                return render(request, 'login.html', {'msg': '用户名或密码错误！'})
+                return render(request, 'users/login.html', {'msg': '用户名或密码错误！'})
         else:
-            return render(request, 'login.html', {'login_form': login_form})
+            return render(request, 'users/login.html', {'login_form': login_form})
 
 
 class Register(View):
     def get(self, request):
         register_form = RegisterForm()
-        return render(request, 'register.html', {'register_form': register_form})
+        return render(request, 'users/register.html', {'register_form': register_form})
 
     def post(self, request):
         register_form = RegisterForm(request.POST)
@@ -71,26 +71,26 @@ class Register(View):
             try:
                 user.save()
             except IntegrityError:
-                return render(request, 'register.html', {'msg': '该邮箱已注册'})
+                return render(request, 'users/register.html', {'msg': '该邮箱已注册'})
             send_verification_email(email, 'register')
-            return render(request, 'login.html', {})
+            return render(request, 'users/login.html', {})
         else:
-            return render(request, 'register.html', {'register_form': register_form})
+            return render(request, 'users/register.html', {'register_form': register_form})
 
 
 class ForgetPassword(View):
     def get(self, request):
         forgetpw_form = ForgetPasswordForm()
-        return render(request, 'forgetpwd.html', {'forgetpw_form': forgetpw_form})
+        return render(request, 'users/forgetpwd.html', {'forgetpw_form': forgetpw_form})
 
     def post(self, request):
         forgetpw_form = ForgetPasswordForm(request.POST)
         if forgetpw_form.is_valid():
             email = request.POST.get('email', '')
             send_verification_email(email, 'forget')
-            return render(request, 'sendemail_success.html', {})
+            return render(request, 'users/sendemail_success.html', {})
         else:
-            return render(request, 'register.html', {'register_form': forgetpw_form})
+            return render(request, 'users/register.html', {'register_form': forgetpw_form})
 
 
 class ResetPassword(View):
@@ -98,7 +98,7 @@ class ResetPassword(View):
         emailvc = EmailVerificationCode.objects.get(code=reset_code)
         if emailvc:
             email = emailvc.email
-            return render(request, 'password_reset.html', {'email': email,
+            return render(request, 'users/password_reset.html', {'email': email,
                                                            'reset_code': reset_code})
 
     def post(self, request, reset_code):
@@ -111,6 +111,6 @@ class ResetPassword(View):
                 user = UserInfo.objects.get(username=email)
                 user.password = make_password(password)
                 user.save()
-            return render(request, 'login.html', {})
+            return render(request, 'users/login.html', {})
         else:
-            return render(request, 'password_reset.html', {})
+            return render(request, 'users/password_reset.html', {})

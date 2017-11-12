@@ -16,19 +16,27 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.static import serve
 from django.views.generic import TemplateView
 import xadmin
 
 from users.views import Login, Register, ActiveUser, ForgetPassword, ResetPassword
+from organizations.views import OrgList
+from muxuewang.settings import MEDIA_ROOT
+
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
 
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
+    url(r'^$', TemplateView.as_view(template_name='users/index.html'), name='index'),
     url(r'^login/$', Login.as_view(), name='login'),
     url(r'^register/$', Register.as_view(), name='register'),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^active/(?P<active_code>.*)/$', ActiveUser.as_view(), name='active_user'),
     url(r'^forget/$', ForgetPassword.as_view(), name='forget_password'),
     url(r'^reset/(?P<reset_code>.*)/$', ResetPassword.as_view(), name='reset_password'),
+
+    url(r'^orglist/$', OrgList.as_view(), name='orglist'),
+
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]
