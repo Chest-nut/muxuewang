@@ -43,8 +43,10 @@
                     <div class="layout">
                         <div class="head">
                             <ul class="tab_header">
-                                <li class="{% if not sort %}active{% endif %}"><a href="?ct=&city={{ city.id }}">全部</a></li>
-                                <li class="{% ifequal sort 'stu_num' %}active{% endifequal %}"><a href="?sort=stu_num&ct=&city={{ city.id }}">学习人数 &#8595;</a></li>
+                                <li class="{% if not sort %}active{% endif %}"><a href="?ct=&city={{ city.id }}">全部</a>
+                                </li>
+                                <li class="{% ifequal sort 'stu_num' %}active{% endifequal %}"><a
+                                        href="?sort=stu_num&ct=&city={{ city.id }}">学习人数 &#8595;</a></li>
                             </ul>
                         </div>
 
@@ -88,19 +90,19 @@
                     </div>
                     <div class="pageturn">
                         {% if orgs.has_previous %}
-                            <li class="long"><a href="?{{ orgs.previous_page_number.querystring }}">上一页</a></li>
+                            <li class="long" style="list-style: none"><a href="?{{ orgs.previous_page_number.querystring }}">上一页</a></li>
                         {% endif %}
                         {% for page in orgs.pages %}
                             {% if page %}
                                 {% ifequal page orgs.number %}
-                                    <li class="active"><a href="">{{ page }}</a></li>
+                                    <li class="active" style="list-style: none"><a href="">{{ page }}</a></li>
                                 {% else %}
-                                    <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                    <li style="list-style: none"><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
                                 {% endifequal %}
                             {% endif %}
                         {% endfor %}
                         {% if orgs.has_next %}
-                            <li class="long"><a href="?{{ orgs.next_page_number.querystring }}">下一页</a></li>
+                            <li class="long" style="list-style: none"><a href="?{{ orgs.next_page_number.querystring }}">下一页</a></li>
                         {% endif %}
                     </div>
                 </div>
@@ -110,7 +112,7 @@
                 <form class="rightform" id="jsStayForm">
                     <div>
                         <img src="{% static 'images/rightform1.png' %}"/>
-                        <input type="text" name="name" id="companyName" placeholder="名字" maxlength="25"/>
+                        <input type="text" name="username" id="companyName" placeholder="名字" maxlength="25"/>
                     </div>
                     <div>
                         <img src="{% static 'images/rightform2.png' %}"/>
@@ -121,8 +123,8 @@
                         <input type="text" name="course_name" id="companyAddress" placeholder="课程名" maxlength="50"/>
                     </div>
                     <p class="error company-tips" id="jsCompanyTips"></p>
-                    <input class="btn" type="text" id="jsStayBtn" value="立即咨询 >"/>
-                    <input type='hidden' name='csrfmiddlewaretoken' value='5I2SlleZJOMUX9QbwYLUIAOshdrdpRcy'/>
+                    <input class="btn" type="button" id="jsStayBtn" value="立即咨询 >"/>
+                    {% csrf_token %}
                 </form>
             </div>
 

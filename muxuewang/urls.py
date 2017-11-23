@@ -21,7 +21,6 @@ from django.views.generic import TemplateView
 import xadmin
 
 from users.views import Login, Register, ActiveUser, ForgetPassword, ResetPassword
-from organizations.views import OrgList
 from muxuewang.settings import MEDIA_ROOT
 
 
@@ -36,7 +35,6 @@ urlpatterns = [
     url(r'^forget/$', ForgetPassword.as_view(), name='forget_password'),
     url(r'^reset/(?P<reset_code>.*)/$', ResetPassword.as_view(), name='reset_password'),
 
-    url(r'^orglist/$', OrgList.as_view(), name='orglist'),
-
+    url(r'^org/', include('organizations.urls', namespace='org')),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]

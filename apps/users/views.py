@@ -6,7 +6,8 @@ from django.db.utils import IntegrityError
 from django.shortcuts import render
 from django.views.generic.base import View
 
-from .forms import LoginForm, RegisterForm, ForgetPasswordForm, ResetPasswordForm
+from .forms import LoginForm, RegisterForm, ForgetPasswordForm, \
+    ResetPasswordForm
 from .models import UserInfo, EmailVerificationCode
 from utils.sendemail import send_verification_email
 
@@ -14,7 +15,9 @@ from utils.sendemail import send_verification_email
 
 class CustomBackend(ModelBackend):
     def authenticate(self, username=None, password=None, **kwargs):
-        user = UserInfo.objects.get(Q(username=username)|Q(email=username)|Q(mobile=username))
+        user = UserInfo.objects.get(Q(username=username)|
+                                    Q(email=username)|
+                                    Q(mobile=username))
         if user.check_password(password):
             return user
 
@@ -46,17 +49,21 @@ class Login(View):
                     login(request, user)
                     return render(request, 'users/index.html', {})
                 else:
-                    return render(request, 'users/login.html', {'msg': '用户未激活，请登录邮箱激活！'})
+                    return render(request, 'users/login.html',
+                                  {'msg': '用户未激活，请登录邮箱激活！'})
             else:
-                return render(request, 'users/login.html', {'msg': '用户名或密码错误！'})
+                return render(request, 'users/login.html',
+                              {'msg': '用户名或密码错误！'})
         else:
-            return render(request, 'users/login.html', {'login_form': login_form})
+            return render(request, 'users/login.html',
+                          {'login_form': login_form})
 
 
 class Register(View):
     def get(self, request):
         register_form = RegisterForm()
-        return render(request, 'users/register.html', {'register_form': register_form})
+        return render(request, 'users/register.html',
+                      {'register_form': register_form})
 
     def post(self, request):
         register_form = RegisterForm(request.POST)
@@ -71,17 +78,20 @@ class Register(View):
             try:
                 user.save()
             except IntegrityError:
-                return render(request, 'users/register.html', {'msg': '该邮箱已注册'})
+                return render(request, 'users/register.html',
+                              {'msg': '该邮箱已注册'})
             send_verification_email(email, 'register')
             return render(request, 'users/login.html', {})
         else:
-            return render(request, 'users/register.html', {'register_form': register_form})
+            return render(request, 'users/register.html',
+                          {'register_form': register_form})
 
 
 class ForgetPassword(View):
     def get(self, request):
         forgetpw_form = ForgetPasswordForm()
-        return render(request, 'users/forgetpwd.html', {'forgetpw_form': forgetpw_form})
+        return render(request, 'users/forgetpwd.html',
+                      {'forgetpw_form': forgetpw_form})
 
     def post(self, request):
         forgetpw_form = ForgetPasswordForm(request.POST)
@@ -90,7 +100,8 @@ class ForgetPassword(View):
             send_verification_email(email, 'forget')
             return render(request, 'users/sendemail_success.html', {})
         else:
-            return render(request, 'users/register.html', {'register_form': forgetpw_form})
+            return render(request, 'users/forgetpwd.html',
+                          {'forgetpw_form': forgetpw_form})
 
 
 class ResetPassword(View):
@@ -98,10 +109,12 @@ class ResetPassword(View):
         emailvc = EmailVerificationCode.objects.get(code=reset_code)
         if emailvc:
             email = emailvc.email
-            return render(request, 'users/password_reset.html', {'email': email,
-                                                           'reset_code': reset_code})
+            return render(request, 'users/password_reset.html',
+                          {'email': email,'reset_code': reset_code})
 
     def post(self, request, reset_code):
+        # 由于urls中有提供参数，这里必须接收reset_code参数，
+        # 否则会报错：提供多余参数
         resetpwd_form = ResetPasswordForm(request.POST)
         if resetpwd_form.is_valid():
             email = request.POST.get('email', '')
