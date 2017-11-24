@@ -2,17 +2,25 @@ from datetime import datetime
 
 from django.db import models
 
+from organizations.models import CourseOrg
+
 # Create your models here.
 
 
 class Course(models.Model):
+    course_org = models.ForeignKey(CourseOrg, verbose_name='课程机构',
+                                   null=True, blank=True)
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=300, verbose_name='课程描述')
+    description = models.CharField(max_length=300,
+                                   verbose_name='课程描述')
     detail = models.TextField(verbose_name='课程详情')
     degree = models.CharField(max_length=2,
-                              choices=(('cj','初级'), ('zj','中级'), ('gj','高级')),
+                              choices=(('cj','初级'),
+                                       ('zj','中级'),
+                                       ('gj','高级')),
                               default='cj')
-    learning_hours = models.SmallIntegerField(default=0, verbose_name='学习时长（分钟）')
+    learning_hours = models.SmallIntegerField(default=0,
+                                              verbose_name='学习时长（分钟）')
     student_num = models.IntegerField(verbose_name='学习人数')
     bookmark_num = models.IntegerField(verbose_name='收藏人数')
     image = models.ImageField(max_length=100,
@@ -49,7 +57,8 @@ class video(models.Model):
 class CourseMaterial(models.Model):
     course = models.ForeignKey(Course)
     name = models.CharField(max_length=100)
-    file = models.FileField(upload_to='courses/resource/%Y/%m', max_length=100)
+    file = models.FileField(upload_to='courses/resource/%Y/%m',
+                            max_length=100)
     add_time = models.DateTimeField(default=datetime.now)
 
     class Meta:

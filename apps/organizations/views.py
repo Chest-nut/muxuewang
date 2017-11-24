@@ -6,6 +6,7 @@ from pure_pagination import Paginator, EmptyPage, \
 
 from .models import City, CourseOrg
 from .forms import UserAskForm
+from courses.models import Course
 
 # Create your views here.
 
@@ -30,7 +31,7 @@ class OrgList(View):
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
             page = 1
-        p = Paginator(course_orgs, 1, request=request)
+        p = Paginator(course_orgs, 5, request=request)
         orgs = p.page(page)
 
         return render(request, 'org-list.html',
@@ -53,3 +54,41 @@ class AddUserAsk(View):
         else:
             return HttpResponse("{'status':'fail', 'msg':'添加出错'}",
                                 content_type='text/plain')
+
+class OrgCourses(View):
+    def get(self, request, org_id):
+        page_type = 'course'
+        org_id = org_id
+        org = CourseOrg.objects.get(id=int(org_id))
+        courses = org.course_set.all()
+        return render(request, 'org-detail-course.html',
+                      {'courses': courses,
+                       'org': org,
+                       'page_type': page_type})
+
+class OrgTeachers(View):
+    def get(self, request, org_id):
+        page_type = 'teacher'
+        org_id = org_id
+        org = CourseOrg.objects.get(id=int(org_id))
+        teachers = org.teacher_set.all()
+        return render(request, 'org-detail-teachers.html',
+                      {'teachers': teachers,
+                       'org': org,
+                       'page_type': page_type})
+
+class OrgDesc(View):
+    def get(self, request, org_id):
+        page_type = 'desc'
+        org_id = org_id
+        org = CourseOrg.objects.get(id=int(org_id))
+        description = org.description
+        return render(request, 'org-detail-desc.html',
+                      {'description': description,
+                       'org': org,
+                       'page_type': page_type})
+
+class AddOrgFav(View):
+    def post(self, request):
+        fav_id = request.POST.get('fav_id', 0)
+        fav_type = request.POST.get('fav_type', 0)
