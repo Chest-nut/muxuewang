@@ -13,6 +13,7 @@ from courses.models import Course
 
 class OrgList(View):
     def get(self, request):
+        page_type = 'org'
         citys = City.objects.all()
         course_orgs = CourseOrg.objects.all()
         hot_orgs = course_orgs.order_by('-click_num')[:3]
@@ -34,7 +35,7 @@ class OrgList(View):
         p = Paginator(course_orgs, 5, request=request)
         orgs = p.page(page)
 
-        return render(request, 'org-list.html',
+        return render(request, 'organizations/org-list.html',
                       {
                           'citys': citys,
                           'orgs': orgs,
@@ -42,6 +43,7 @@ class OrgList(View):
                           'city_id': city_id,
                           'hot_orgs': hot_orgs,
                           'sort': sort,
+                          'page_type': page_type,
                       })
 
 class AddUserAsk(View):
@@ -61,7 +63,7 @@ class OrgCourses(View):
         org_id = org_id
         org = CourseOrg.objects.get(id=int(org_id))
         courses = org.course_set.all()
-        return render(request, 'org-detail-course.html',
+        return render(request, 'organizations/org-detail-course.html',
                       {'courses': courses,
                        'org': org,
                        'page_type': page_type})
@@ -72,7 +74,7 @@ class OrgTeachers(View):
         org_id = org_id
         org = CourseOrg.objects.get(id=int(org_id))
         teachers = org.teacher_set.all()
-        return render(request, 'org-detail-teachers.html',
+        return render(request, 'organizations/org-detail-teachers.html',
                       {'teachers': teachers,
                        'org': org,
                        'page_type': page_type})
@@ -83,7 +85,7 @@ class OrgDesc(View):
         org_id = org_id
         org = CourseOrg.objects.get(id=int(org_id))
         description = org.description
-        return render(request, 'org-detail-desc.html',
+        return render(request, 'organizations/org-detail-desc.html',
                       {'description': description,
                        'org': org,
                        'page_type': page_type})

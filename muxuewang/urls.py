@@ -36,5 +36,8 @@ urlpatterns = [
     url(r'^reset/(?P<reset_code>.*)/$', ResetPassword.as_view(), name='reset_password'),
 
     url(r'^org/', include('organizations.urls', namespace='org')),
+
+    url(r'^course/', include('courses.urls', namespace='course')),
+
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]

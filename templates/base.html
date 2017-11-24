@@ -17,6 +17,7 @@
 
 
 </head>
+
 <body>
 <section class="headerwrap ">
     <header>
@@ -84,16 +85,16 @@
                 <div class="nav">
                     <div class="wp">
                         <ul>
-                            <li><a href="index.html">首页</a></li>
-                            <li>
-                                <a href="course-list.html">
+                            <li><a href="{% url 'index' %}">首页</a></li>
+                            <li class="{% ifequal page_type 'course' %}active{% endifequal %}">
+                                <a href="{% url 'course:course_list' %}">
                                     公开课<img class="hot" src="{% static 'images/nav_hot.png' %}">
                                 </a>
                             </li>
-                            <li>
+                            <li class="{% ifequal page_type 'teacher' %}active{% endifequal %}">
                                 <a href="teachers-list.html">授课教师</a>
                             </li>
-                            <li class="active"><a href="{% url 'org:orglist' %}">授课机构</a></li>
+                            <li class="{% ifequal page_type 'org' %}active{% endifequal %}"><a href="{% url 'org:orglist' %}">授课机构</a></li>
                         </ul>
                     </div>
                 </div>
@@ -103,15 +104,7 @@
     </header>
 </section>
 <!--crumbs start-->
-{% block custom_bread %}
-    <section>
-        <div class="wp">
-            <ul class="crumbs">
-                <li><a href="index.html">首页</a>></li>
-            </ul>
-        </div>
-    </section>
-{% endblock %}
+{% block custom_bread %}{% endblock %}
 
 {% block content %}
 {% endblock %}
